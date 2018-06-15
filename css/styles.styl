@@ -7,9 +7,14 @@ _baseI = invert(_base)
 
 html,
 body,
-.stage
+.stage,
+.summary-stage
+	overflow-y hidden
 	height 100%
 	width 100%
+
+body
+	position relative
 
 .row-sm
 	margin-left -5px
@@ -19,9 +24,108 @@ body,
 		padding-right 5px
 
 .stage
+	z-index 2
 	position relative
 	background-size cover
 	background-position center center
+	&.to-payment
+		transition 0.6s
+		transform translateX(-100%)
+
+.summary-stage
+	position absolute
+	background _base
+	z-index 1
+
+.summary-loading
+	position absolute
+	top 50%
+	left 50%
+	transform translate(-50%, -50%) scale(1)
+	transition 0.6s
+	z-index 1
+	&.inactive
+		opacity 0
+		transform translate(-50%, -500px) scale(1.1)
+		visibility hidden
+
+.summary-loading-title
+	margin-bottom 7px
+	margin-top 20px
+	color white
+	// text-transform uppercase
+	font-weight 400
+	letter-spacing 1px
+	font-size 19px
+	text-align center
+
+.summary-loading-subtitle
+	color white
+	margin-bottom 0
+	font-size 16px
+	opacity 0.85
+
+.summary-success
+	// display none
+	position absolute
+	left 50%
+	transform translate(-50%, 300px) scale(1.3)
+	top 100px
+	width 300px
+	opacity 0
+	transition 0.6s
+	visibility hidden
+	z-index 2
+	&.active
+		transform translate(-50%, 0) scale(1)
+		opacity 1
+		visibility visible
+
+
+
+.summary-success-icon
+	display table
+	// height 60px
+	// width 60px
+	// line-height 60px
+	// background white
+	text-align center
+	border-radius 50%
+	margin 0 auto
+	font-size 40px
+	color white
+
+.summary-success-title,
+.summary-success-subtitle
+	color white
+	text-align center
+
+.summary-success-subtitle
+	opacity .75
+
+.summary-success-list
+	list-style none
+	margin 0
+	margin-top 20px
+	padding 20px
+	background white
+	border-radius 5px
+	> li
+		margin-bottom 15px
+		padding-bottom 15px
+		border-bottom 1px dashed darken(white, 10%)
+		&:last-child
+			margin-bottom 0
+			padding-bottom 0
+			border none
+		> span
+			display inline-block
+			&:nth-child(1)
+				max-width 64%
+				opacity 0.85
+			&:nth-child(2)
+				float right
+				font-weight bold
 
 .stage-mask,
 .stage-inner-shadow
@@ -30,8 +134,8 @@ body,
 	left 0
 	width 100%
 	height 100%
-	
-	
+
+
 .stage-mask
 	background-color black
 	opacity .46
@@ -40,26 +144,31 @@ body,
 .stage-inner-shadow
 	box-shadow inset 0 0 200px 0 fade-out(black, 50%)
 	z-index 2
-	
+
 .stage-body
 	z-index 3
 	position absolute
 	top 50%
+	transform translateY(-50%)
+	// bottom 10%
 	width 100%
 	left 0
-	transform translateY(-50%)
 	color white
-	
+
+.stage-body-inner
+	position relative
+
 
 .product-list
 	list-style none
 	margin 0
 	padding 0
-	margin-top 25px
+	margin-top 30px
+	margin-right 20px
 	> li
 		overflow hidden
-		margin-bottom 30px
-		padding-bottom 30px
+		margin-bottom 20px
+		padding-bottom 20px
 		border-bottom 1px solid fade-out(white, 80%)
 
 .product-list-thumbnail
@@ -72,71 +181,346 @@ body,
 		max-width 100%
 		max-height 45px
 		float right
-	
+
+.product-list-icon
+	float left
+	width 25%
+	padding-left 23px
+	display inline-block
+	font-size 23px
+	opacity .5
+	// text-align center
+
 .product-list-body
-	width 60%
+	width 55%
 	padding-right 20px
 	float left
-	
+	// height 45px
+	overflow hidden
+
 .product-list-title
 	margin 0
 	font-weight normal
-	font-size 16px
+	font-size 14px
 	line-height 1.4em
 	opacity .85
-	
+
 .product-list-price
-	width 15%
+	width 20%
 	float left
-	font-weight bold
+	// font-weight bold
 	font-size 18px
 	line-height 1.4em
 	margin-bottom 0
 	text-align right
-	
+
+.total
+	position relative
+	margin-right 20px
+
+
+.total-title
+	// padding-right calc(25% + 20px)
+	padding-left 25%
+	margin-bottom 0
+	margin-top 0
+	text-align left
+	font-weight normal
+	// text-transform uppercase
+	font-size 22px
+	line-height 1em
+
+.total-price
+	position absolute
+	top 0
+	right 0
+	font-weight bold
+	margin-bottom 0
+	font-size 22px
+	line-height 1em
+	letter-spacing 0.5px
+
 .card-form
 	z-index 1
 	background white
 	color darken(white, 60%)
-	padding 25px 35px
+	padding 30px 35px
 	padding-bottom 65px
-	border-radius 2px
-	box-shadow 0 10px 25px fade-out(black, 70%)
+	border-radius 3px
+	box-shadow 0 3px 40px fade-out(black, 50%)
 	position relative
 	label
 		color darken(white, 30%)
 		text-transform uppercase
 		font-size 12px
 		letter-spacing 0.7px
-		margin-bottom 0
+		// margin-bottom 0
 	.form-control
 		border-radius 0
 		border none
 		box-shadow none
-		border-bottom 1px solid darken(white, 25%)
+		border-bottom 1.5px solid darken(white, 15%)
 		padding-left 0
 		padding-right 0
 		font-size 16px
 		height 40px
+		background none
+		&.invalid
+			border-color red
+		&.valid
+			border-color lighten(_base, 15%)
+	.form-control-wrap
+		position relative
 	.form-group
 		margin-bottom 35px
-		
+	.form-control-select-wrap
+		position relative
+		&:after
+			position absolute
+			display block
+			height 40px
+			line-height 40px
+			width 10px
+			content '\f107'
+			font-family 'FontAwesome'
+			top 0
+			right 0
+			text-align right
+			z-index 1
+			opacity .64
+		.form-control
+			padding-right 10px
+			z-index 2
+			position relative
+			-webkit-appearance none
+			-moz-appearance none
+			appearance none
+
+
+.credit-cards-item
+	position absolute
+	top 0
+	right 0
+	width 50px
+	transition 0.6s
+	opacity 0
+	transform translateY(-10px)
+	&.active
+		opacity 1
+		transform translateY(0)
+
 .card-form-submit
 	z-index 2
-	background-color _base
-	box-shadow 0 0 30px fade-out(lighten(_base, 10%), 20%)
+	background-color darken(_base, 25%)
+
 	position absolute
 	bottom 0
 	left 0
 	border-radius 0 0 2px 2px
-	border none
+	// border none
+	border 1px solid darken(_base, 25%)
 	padding 20px 0
 	text-transform uppercase
 	// font-weight bold
 	letter-spacing 1.6px
 	// font-size 12px
-	transition 0.32s
+	transition 0.5s
 	&:hover
-		background-color darken(_base, 20%)
-		box-shadow 0 0 30px fade-out(lighten(_base, 10%), 70%)
-	
+		// border-color darken(_base, 25%)
+		background-color darken(_base, 25%)
+		// box-shadow 0 0 30px fade-out(lighten(_base, 10%), 70%)
+	&.active
+		border 1px solid lighten(_base, 17%) !important
+		background-color lighten(_base, 10%) !important
+		box-shadow 0 10px 30px fade-out(lighten(_base, 10%), 50%)\, 0 1px 3px fade-out(darken(_base, 50%), 20%)
+
+.validation-errors
+	position absolute
+	right 0
+	top 0
+	transform translateX(100%)
+	list-style none
+	margin-top 30px
+	padding-left 30px
+	opacity .65
+	> li
+		margin-bottom 10px
+		display none
+
+#inputCardCVV::-webkit-inner-spin-button,
+#inputCardCVV::-webkit-inner-spin-button
+	-webkit-appearance none !important
+
+#inputCardCVV
+	-moz-appearance textfield !important
+
+
+.lds-ellipsis
+	display inline-block
+	position relative
+	width 64px
+	height 40px
+	margin 0 auto
+	display table
+.lds-ellipsis div
+	position absolute
+	top 27px
+	width 11px
+	height 11px
+	border-radius 50%
+	background lighten(_baseI, 15%)
+	animation-timing-function cubic-bezier(0, 1, 1, 0)
+.lds-ellipsis div:nth-child(1)
+	left 6px
+	animation lds-ellipsis1 0.6s infinite
+.lds-ellipsis div:nth-child(2)
+	left 6px
+	animation lds-ellipsis2 0.6s infinite
+.lds-ellipsis div:nth-child(3)
+	left 26px
+	animation lds-ellipsis2 0.6s infinite
+.lds-ellipsis div:nth-child(4)
+	left 45px
+	animation lds-ellipsis3 0.6s infinite
+
+@keyframes lds-ellipsis1
+	0%
+		transform scale(0)
+		opacity .5
+
+	100%
+		transform scale(1)
+		opacity 1
+
+@keyframes lds-ellipsis3
+	0%
+		transform scale(1)
+		opacity 1
+
+	100%
+		transform scale(0)
+		opacity .5
+
+@keyframes lds-ellipsis2
+	0%
+		transform translate(0, 0)
+
+	100%
+		transform translate(19px, 0)
+
+
+.circle-loading
+	width 60px
+	height 60px
+	// border 1px solid white
+	// border-radius 50%
+	position relative
+	overflow hidden
+	border-radius 50%
+	margin 0 auto
+	.circle-loading-bg,
+	.circle-loading-spin,
+	.circle-loading-border
+		position absolute
+		top 0
+		left 0
+		transition 0.5s
+	.circle-loading-bg
+		// display none
+		background _base
+		z-index 3
+		top 2px
+		left 2px
+		width 56px
+		height 56px
+		border-radius 50%
+	.circle-loading-spin
+		background _baseI
+		z-index 2
+		height 50%
+		width 50%
+		border-radius 60px 0 0 0
+		animation spin 1s infinite
+		transform-origin 30px 30px
+		// width 100%
+		// height 100%
+		// border-radius 50%
+		// animation none
+		// transform-origin 0 0
+		// transition 0.5s
+		transition none
+	.circle-loading-border
+		z-index 1
+		height 100%
+		width 100%
+		background fade-out(white, 50%)
+		border-radius 50%
+
+.circle-loading-icon,
+.circle-complete-icon
+	position absolute
+	z-index 999
+	color white
+	text-align center
+	display block
+	width 100%
+	height 60px
+	line-height 60px
+	font-size 20px
+	transition 0.6s
+
+.circle-loading-icon
+	animation blink 1s infinite
+
+.circle-complete-icon
+	transform translateY(120%) scale(0.8)
+	font-size 26px
+
+
+.circle-loading.complete
+	animation pop 1s
+	.circle-loading-border
+		background _baseI
+	.circle-loading-bg
+		opacity 0
+	.circle-loading-spin
+		display none
+	.circle-loading-icon
+		animation none
+		transform translateY(-120%) scale(0.8)
+	.circle-complete-icon
+		transform translateY(0) scale(1)
+		animation checkpop 0.6s
+		animation-delay 0.5s
+
+@keyframes checkpop
+	0%
+		transform rotate(0) scale(1)
+	33%
+		transform rotate(-7deg) scale(0.85)
+	66%
+		transform rotate(10deg) scale(1.15)
+	100%
+		transform rotate(0) scale(1)
+
+@keyframes blink
+	0%
+		opacity 1
+	50%
+		opacity 0.65
+	100%
+		opacity 1
+
+@keyframes spin
+	100%
+		transform rotate(360deg)
+
+@keyframes pop
+	0%
+		transform scale(1.0)
+	50%
+		transform scale(1.2)
+		box-shadow 0 2px 15px fade-out(black, 95%)
+	100%
+		transform scale(1.0)
+		box-shadow none
