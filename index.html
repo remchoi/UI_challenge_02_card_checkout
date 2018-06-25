@@ -16,26 +16,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
 </head>
-
 <body>
 	<!-- MAIN HTML -->
-	<div class="summary-stage">
-    <div id="loadingPayment" class="summary-loading">
-      <div class="circle-loading">
-        <div class="circle-loading-bg"></div>
-        <div class="circle-loading-spin"></div>
-        <div class="circle-loading-border"></div>
-        <i class="circle-loading-icon fa fa-credit-card"></i>
-        <i class="circle-complete-icon fa fa-check"></i>
-      </div>
-      <h3 class="summary-loading-title">Processing payment</h3>
-      <p class="summary-loading-subtitle">Please do not close the browser</p>
-    </div>
-    <div id="summarySuccess" class="summary-success">
-      <i class="fa fa-check summary-success-icon"></i>
-      <h3 class="summary-success-title">Payment successful</h3>
-      <p class="summary-success-subtitle">We have emailed you the peceipt</p>
-      <ul class="summary-success-list">
+	<div class="summary-stage" id="summaryStage">
+    <div id="loadingPayment" class="summary-stage-inner">
+      <div class="summary-stage-body">
+        <div class="circle-wrapper">
+          <div class="circle-shadow"></div>
+          <div class="circle-loading">
+            <div class="circle-loading-bg"></div>
+            <div class="circle-loading-spin"></div>
+            <div class="circle-loading-border"></div>
+            <i class="circle-loading-icon fa fa-credit-card"></i>
+            <i class="circle-complete-icon fa fa-check"></i>
+          </div>
+        </div>
+        <div class="summary-heading">
+          <h3 class="summary-title" id="summaryTitle" data-complete="Payment successful
+">Processing payment</h3>
+          <p class="summary-subtitle" id="summarySubtitle" data-complete="Check your inbox for the receipt">Please do not close the browser</p>
+        </div>
+        <ul class="summary-success-list">
         <li>
           <span>Timberland Men's 6-Inch Waterproof Boots</span>
           <span>$100</span>
@@ -54,13 +55,14 @@
         </li>
         <li>
           <span>Grand Total</span>
-          <span>$1225</span>
+          <span>$1246.56</span>
         </li>
       </ul>
+      </div>
     </div>
   </div>
 
-	<div id="mainStage" class="stage" style="background-image: url(img/bg_origin.jpg)">
+	<div id="mainStage" class="stage" style="background-image: url(img/bg-2.jpg)">
     <div class="stage-mask"></div>
     <div class="stage-inner-shadow"></div>
 

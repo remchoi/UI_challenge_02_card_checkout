@@ -59,6 +59,9 @@
 	var $mainStage = $('#mainStage');
 	var $loadingPayment = $('#loadingPayment');
 	var $summarySuccess = $('#summarySuccess');
+	var $summaryStage = $('#summaryStage');
+	var $summaryTitle = $('#summaryTitle');
+	var $summarySubtitle = $('#summarySubtitle');
 
 	elements.forEach(function(element){
 		var $el = $('#' + element.id);
@@ -78,10 +81,8 @@
 
 	$submitPayment.on('click', function(e) {
 		e.preventDefault();
-		processLoading();
 		if(allValid()) {
-			// processLoading();
-			// $mainStage.addClass('to-payment');
+			processLoading();
 		} else {
 			elements.forEach(function(element){
 				validateElement(element);
@@ -91,13 +92,24 @@
 
 	function processLoading() {
 		$mainStage.addClass('to-payment');
-		// setTimeout(function(){
-		// 	$loadingPayment.addClass('inactive');
-		// 	setTimeout(function(){
-		// 		$summarySuccess.addClass('active');
-		// 	}, 200);
-		// }, 2000);
+		setTimeout(function(){
+			$summaryStage.addClass('complete');
+			successMessage();
+		}, 2000);
 	}
+
+	function successMessage() {
+		$summaryTitle.text(function() {
+			return $(this).data('complete');
+		});
+		$summarySubtitle.text(function() {
+			return $(this).data('complete');
+		});
+	}
+
+	// function completeMsg() {
+	// 	$(this).data('complete');
+	// }
 
 	function validateElement(element, invalid = true) {
 		var $el = $('#' + element.id);
